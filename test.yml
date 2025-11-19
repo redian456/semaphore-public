@@ -1,0 +1,11 @@
+---
+- name: Create a test file in a writable location
+  hosts: all
+  become: false
+
+  tasks:
+    - name: Create file in /tmp with test content
+      copy:
+        dest: /tmp/my_test_file.txt
+        content: "This is a test file created in /tmp.\n"
+        mode: '0644'
