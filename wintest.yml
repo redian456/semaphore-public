@@ -1,0 +1,15 @@
+---
+- name: Create test file on Windows
+  hosts: windows
+  gather_facts: no
+
+  tasks:
+    - name: Ensure C:\Temp exists
+      ansible.windows.win_file:
+        path: C:\Temp
+        state: directory
+
+    - name: Create test.txt with sample content
+      ansible.windows.win_copy:
+        content: "This is a test file."
+        dest: C:\Temp\test.txt
