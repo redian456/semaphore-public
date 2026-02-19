@@ -1,6 +1,6 @@
 ---
 - name: Create test file on Windows
-  hosts: windows
+  hosts: all
   gather_facts: no
 
   tasks:
