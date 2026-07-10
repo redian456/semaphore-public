@@ -3,6 +3,20 @@
   hosts: all
   gather_facts: no
 
+  pre_tasks:
+    - name: Check if WinRM port is reachable
+      wait_for:
+        host: "{{ inventory_hostname }}"
+        port: 5986
+        timeout: 3
+        state: started
+      delegate_to: localhost
+      register: winrm_check
+      ignore_errors: true
+  
+    - meta: end_host
+      when: winrm_check.failed
+
   tasks:
     - name: Ensure C:\Temp exists
       ansible.windows.win_file:
