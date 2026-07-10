@@ -1,20 +1,25 @@
 ---
 - name: Create test file on Windows
   hosts: all
-  gather_facts: no
+  gather_facts: false
+  ignore_unreachable: true
 
   pre_tasks:
     - name: Check if WinRM port is reachable
       wait_for:
         host: "{{ inventory_hostname }}"
         port: 5986
-        timeout: 3
         state: started
+        timeout: 3
       delegate_to: localhost
+      vars:
+        ansible_connection: local
       register: winrm_check
       ignore_errors: true
-  
-    - meta: end_host
+      changed_when: false
+
+    - name: Skip host if WinRM is not reachable
+      meta: end_host
       when: winrm_check.failed
 
   tasks:
